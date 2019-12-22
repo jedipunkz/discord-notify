@@ -61,7 +61,7 @@ func main() {
 }
 
 func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
-	channel_id := viper.GetString("channel_id")
+	notify_channel_id := viper.GetString("notify_channel_id")
 
 	_, ok := usermap[vs.UserID]
 	if !ok {
@@ -75,9 +75,9 @@ func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
 		channel, _ := discord.Channel(vs.ChannelID)
 		message := usermap[vs.UserID].Name + "さんが" + channel.Name + "にジョインしました"
 		log.Print(message)
-		fmt.Println(message)
 
-		s.ChannelMessageSend(channel_id, message)
+		// 通知チャンネルにメッセージ送信
+		s.ChannelMessageSend(notify_channel_id, message)
 	}
 
 	usermap[vs.UserID].CurrentVC = vs.ChannelID
