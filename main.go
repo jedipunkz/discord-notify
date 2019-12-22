@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/mitchellh/go-homedir"
+	"github.com/spf13/viper"
 )
 
 type UserState struct {
@@ -13,17 +16,33 @@ type UserState struct {
 }
 
 var (
-	Token   = "Bot " + ""
-	BotName = ""
 	stopBot = make(chan bool)
 	discord *discordgo.Session
 	usermap = map[string]*UserState{}
 )
 
+func init() {
+	home, err := homedir.Dir()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	viper.AddConfigPath(home)
+	viper.SetConfigName(".discord-notify")
+
+	viper.AutomaticEnv()
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Println("Using config file: ", viper.ConfigFileUsed())
+	}
+}
+
 func main() {
 	var err error
+	token := "Bot " + viper.GetString("token")
+
 	discord, err = discordgo.New()
-	discord.Token = Token
+	discord.Token = token
 	if err != nil {
 		fmt.Println("Error logging in")
 		fmt.Println(err)
@@ -42,6 +61,7 @@ func main() {
 }
 
 func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
+	channel_id := viper.GetString("channel_id")
 
 	_, ok := usermap[vs.UserID]
 	if !ok {
@@ -57,7 +77,7 @@ func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
 		log.Print(message)
 		fmt.Println(message)
 
-		s.ChannelMessageSend("", message)
+		s.ChannelMessageSend(channel_id, message)
 	}
 
 	usermap[vs.UserID].CurrentVC = vs.ChannelID
