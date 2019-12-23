@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/bwmarrin/discordgo"
@@ -41,18 +40,16 @@ func main() {
 	var err error
 	token := "Bot " + viper.GetString("token")
 
-	discord, err = discordgo.New()
-	discord.Token = token
+	discord, err = discordgo.New(token)
 	if err != nil {
-		fmt.Println("Error logging in")
-		fmt.Println(err)
+		fmt.Printf("Login Error: %s", err)
 	}
 
 	discord.AddHandler(onVoiceStateUpdate)
 
 	err = discord.Open()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Session Error: %s", err)
 	}
 
 	fmt.Println("Listening...")
@@ -62,25 +59,21 @@ func main() {
 
 func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
 	notify_channel_id := viper.GetString("notify_channel_id")
+	me := viper.GetString("me")
 
 	_, ok := usermap[vs.UserID]
 	if !ok {
 		usermap[vs.UserID] = new(UserState)
 		user, _ := discord.User(vs.UserID)
 		usermap[vs.UserID].Name = user.Username
-		log.Print("new user added : " + user.Username)
 	}
 
-	if len(vs.ChannelID) > 0 && usermap[vs.UserID].CurrentVC != vs.ChannelID {
+	if len(vs.ChannelID) > 0 && usermap[vs.UserID].CurrentVC != vs.ChannelID && usermap[vs.UserID].Name != me {
 		channel, _ := discord.Channel(vs.ChannelID)
-		message := usermap[vs.UserID].Name + "さんが" + channel.Name + "にジョインしました"
-		log.Print(message)
+		message := usermap[vs.UserID].Name + " Joined to " + channel.Name + " Channel"
 
-		// 通知チャンネルにメッセージ送信
 		s.ChannelMessageSend(notify_channel_id, message)
 	}
 
 	usermap[vs.UserID].CurrentVC = vs.ChannelID
-
-	fmt.Printf("%+v", vs.VoiceState)
 }

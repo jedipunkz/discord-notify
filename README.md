@@ -2,7 +2,7 @@
 
 ## Description
 
-Discord bot that notify us when our friend join voice chat channel.
+Discord bot that notify when friend join voice chat channel.
 
 ## Installation
 
@@ -18,10 +18,12 @@ Setup $HOME/discord-notify.yaml file with such variables.
 cat << EOF > $HOME/.discord-notify.yaml
 token: <your bot token id>
 notify_channel_id: <notify channel id>
+me: <your own discord name>
 EOF
 ```
 
 ## Start app
 
 ```bash
-nohup /some/path/discord-notify
+nohup /some/path/to/discord-notify
+```
