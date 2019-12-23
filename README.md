@@ -27,3 +27,7 @@ EOF
 ```bash
 nohup /some/path/to/discord-notify
 ```
+
+## Reference
+
+- [Discord で Voice チャンネルへの入室を検知する bot (ついでに Google Home で通知](https://qiita.com/tyoro/items/abf9dce0e0020573298c)
