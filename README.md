@@ -22,6 +22,12 @@ me: <your own discord name>
 EOF
 ```
 
+| Parameter         | Meaning           |
+|-------------------|-------------------|
+| token             | Token of your bot |
+| notify_channel_id | Discord Channel ID which you want to notify. You can get ID on Developer Mode of discord app. |
+| me                | Your discord name without (#) numbers. This is required for notifing when friend (*exclude you*) join channel |
+
 ## Start app
 
 ```bash
