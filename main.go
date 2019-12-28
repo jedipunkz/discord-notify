@@ -46,6 +46,7 @@ func main() {
 	}
 
 	discord.AddHandler(onVoiceStateUpdate)
+	discord.AddHandler(onMessageCreate)
 
 	err = discord.Open()
 	if err != nil {
@@ -76,4 +77,16 @@ func onVoiceStateUpdate(s *discordgo.Session, vs *discordgo.VoiceStateUpdate) {
 	}
 
 	usermap[vs.UserID].CurrentVC = vs.ChannelID
+}
+
+func onMessageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.ID == s.State.User.ID || m.Author.Bot {
+		return
+	}
+
+	if m.Content == "ping" {
+		s.ChannelMessageSend(m.ChannelID, "Pong!")
+	}
+
+	fmt.Printf("Message: %+v\n", m.Message)
 }
