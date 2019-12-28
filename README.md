@@ -34,6 +34,25 @@ EOF
 nohup /some/path/to/discord-notify
 ```
 
+## Docker
+
+### docker build
+
+Copy .discord-notify.yaml file from $HOME dir to current dir, and build docker container image.
+
+```bash
+cp $HOME/.discord-notify.yaml .
+docker build . -t discord-notify
+```
+
+### docker run
+
+Run docker container on daemon mode.
+
+```bash
+docker run -d slack-ansible
+```
+
 ## Reference
 
 - [Discord で Voice チャンネルへの入室を検知する bot (ついでに Google Home で通知](https://qiita.com/tyoro/items/abf9dce0e0020573298c)
