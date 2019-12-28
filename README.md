@@ -1,5 +1,7 @@
 # discord-notify
 
+[![Build Status](https://travis-ci.org/jedipunkz/discord-notify.svg?branch=master)](https://travis-ci.org/jedipunkz/discord-notify)
+
 ## Description
 
 Discord bot that notify when friend join voice chat channel.
