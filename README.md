@@ -1,4 +1,4 @@
-# discord-notify
+# Discord-Notify
 
 [![Build Status](https://travis-ci.org/jedipunkz/discord-notify.svg?branch=master)](https://travis-ci.org/jedipunkz/discord-notify)
 
