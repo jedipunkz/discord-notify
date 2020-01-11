@@ -50,7 +50,7 @@ docker build . -t discord-notify
 Run docker container on daemon mode.
 
 ```bash
-docker run -d slack-ansible
+docker run -d discord-notify
 ```
 
 ## Reference
